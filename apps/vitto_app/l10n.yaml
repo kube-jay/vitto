@@ -4,3 +4,4 @@ output-dir: lib/app/localization/generated
 output-localization-file: app_localizations.dart
 output-class: AppLocalizations
 nullable-getter: false
+format: true
