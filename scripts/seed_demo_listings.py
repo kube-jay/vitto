@@ -1,14 +1,16 @@
 """Creates a few demo Listings (with generated photos) on LOCAL Supabase.
 
-Usage (after `npx supabase db reset`):
+Usage:
     python scripts/seed_demo_listings.py
-Uses the seeded test accounts. Never point at production.
+Safe to rerun: Listings that already exist are skipped. Uses the seeded test
+accounts. Never point at production.
 """
 
 import json
 import struct
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 import zlib
 
@@ -82,6 +84,11 @@ for (email, slug, title, desc, price, negotiable, condition, country, region, ci
                    body={"email": email, "password": PASSWORD})
         tokens[email] = (res["access_token"], res["user"]["id"])
     token, uid = tokens[email]
+    existing = call("GET", "/rest/v1/listings?select=id&seller_id=eq." + uid
+                    + "&title=eq." + urllib.parse.quote(title), token)
+    if existing:
+        print(f"  --  {title} (already there)")
+        continue
     cat = call("GET", f"/rest/v1/categories?slug=eq.{slug}&select=id", token)[0]["id"]
     listing = call("POST", "/rest/v1/listings", token, {
         "category_id": cat, "title": title, "description": desc, "price_minor": price,
@@ -95,4 +102,4 @@ for (email, slug, title, desc, price, negotiable, condition, country, region, ci
     call("POST", "/rest/v1/rpc/listing_set_status", token,
          {"p_listing_id": listing["id"], "p_status": "active"})
     print(f"  ok  {title} ({listing['currency']})")
-print("Demo listings created.")
+print("Demo listings ready.")

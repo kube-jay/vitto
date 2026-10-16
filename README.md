@@ -22,6 +22,8 @@ scripts/          reproducible local tasks
 
 ## Run it locally
 
+**Quick start on Windows:** open Docker Desktop, then double-click `start-vitto.cmd`.
+
 Full guide with test accounts: [docs/runbooks/local-dev.md](docs/runbooks/local-dev.md). Toolchain versions: [docs/runbooks/toolchain.md](docs/runbooks/toolchain.md).
 
 ```bash
