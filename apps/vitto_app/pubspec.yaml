@@ -1,0 +1,29 @@
+name: vitto_app
+description: "Vitto marketplace – responsive Flutter Web MVP (Nigeria / Benin)."
+publish_to: 'none'
+
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  flutter_riverpod: ^3.3.2
+  go_router: ^17.2.3
+  supabase_flutter: ^2.18.3
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true

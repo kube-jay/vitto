@@ -1,0 +1,9 @@
+# Replace @person-a/b/c with real GitHub handles (Part II §37.3).
+*                         @person-a @person-b @person-c
+/apps/vitto_app/lib/      @person-a
+/supabase/migrations/     @person-b
+/supabase/functions/      @person-b @person-c
+/.github/workflows/       @person-c
+/docs/product/            @person-a @person-b @person-c
+/docs/contracts/          @person-a @person-b @person-c
+/docs/decisions/          @person-a @person-b @person-c
