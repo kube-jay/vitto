@@ -21,8 +21,8 @@ void main() {
   });
 
   testWidgets('switching to French translates the UI', (tester) async {
-    await pumpApp(tester, const Size(1280, 800));
-    expect(find.byType(NavigationRail), findsOneWidget);
+    await pumpApp(tester, const Size(1440, 900));
+    expect(find.byType(NavigationBar), findsNothing);
     await tester.tap(find.byIcon(Icons.translate));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Français').last);
@@ -31,14 +31,14 @@ void main() {
       find.text('Achetez et vendez au Nigeria et au Bénin'),
       findsOneWidget,
     );
-    expect(find.text('Accueil'), findsOneWidget);
+    expect(find.text('Déposer une annonce'), findsWidgets);
   });
 
   testWidgets('protected routes redirect to sign-in when signed out', (
     tester,
   ) async {
-    await pumpApp(tester, const Size(1280, 800));
-    await tester.tap(find.text('Sell'));
+    await pumpApp(tester, const Size(1024, 800));
+    await tester.tap(find.text('Post a Listing').first);
     await tester.pumpAndSettle();
     expect(find.text('Sign in'), findsWidgets);
     expect(find.text('Create Listing'), findsNothing);

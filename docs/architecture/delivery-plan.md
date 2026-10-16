@@ -6,6 +6,8 @@
 
 **Out of scope (Part I §21):** Vitto delivery/drivers · logistics tracking · auctions/bidding · subscriptions · promoted Listings · AI recommendations/moderation · advanced KYC · automated dispute resolution · voice/video calls, voice notes, file sharing in chat · social features · auto-translation · currency conversion · native Android/iOS release · Next.js storefront.
 
+**Team setup:** A/B/C roles are not split yet; everyone works across all areas. GitHub handles go into CODEOWNERS later.
+
 **Production gates:** no live money until DEC-05 and DEC-06 are approved and provider/legal confirmation is on file. Online flow is built and tested against the mock adapter and provider sandboxes only.
 
 ## Milestones (acceptance-driven, not calendar-driven)

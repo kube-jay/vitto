@@ -36,3 +36,4 @@ These follow Part II recommendations and only affect implementation. Flag if A/B
 | ENG-03 | Country/currency pairing enforced in DB: NG↔NGN, BJ↔XOF | Part II §30.1 |
 | ENG-04 | Admin role stored in a server-only `admin_users` table, never on a user-writable profile column | Part II §33.1 |
 | ENG-05 | Payments run with `MockPaymentAdapter` until DEC-05/06 are approved | Part II §34.3, §46 |
+| ENG-06 | Brand: white surfaces, dark blue `#0B2D6B` as the only accent, font Onest (SIL OFL, bundled in `apps/vitto_app/assets/fonts`). Light theme only. Simple Avito-style layout: 5 phone tabs (Home, Favorites, Sell, Inbox, Profile); My Deals lives under Profile | Team request, 2026-10-16 |

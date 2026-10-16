@@ -222,4 +222,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fixedPrice => 'Fixed price';
+
+  @override
+  String get postListing => 'Post a Listing';
+
+  @override
+  String get searchEverything => 'Search phones, furniture, clothes…';
+
+  @override
+  String get latestListingsEmptyHint =>
+      'Be the first to post a Listing in your area.';
 }

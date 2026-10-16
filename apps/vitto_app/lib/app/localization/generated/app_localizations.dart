@@ -523,6 +523,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fixed price'**
   String get fixedPrice;
+
+  /// No description provided for @postListing.
+  ///
+  /// In en, this message translates to:
+  /// **'Post a Listing'**
+  String get postListing;
+
+  /// No description provided for @searchEverything.
+  ///
+  /// In en, this message translates to:
+  /// **'Search phones, furniture, clothes…'**
+  String get searchEverything;
+
+  /// No description provided for @latestListingsEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to post a Listing in your area.'**
+  String get latestListingsEmptyHint;
 }
 
 class _AppLocalizationsDelegate

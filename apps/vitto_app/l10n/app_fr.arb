@@ -70,5 +70,8 @@
   "conditionNew": "Neuf",
   "conditionUsed": "Occasion",
   "negotiable": "Négociable",
-  "fixedPrice": "Prix fixe"
+  "fixedPrice": "Prix fixe",
+  "postListing": "Déposer une annonce",
+  "searchEverything": "Téléphones, meubles, vêtements…",
+  "latestListingsEmptyHint": "Soyez le premier à publier une annonce près de chez vous."
 }

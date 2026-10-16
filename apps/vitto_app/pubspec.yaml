@@ -27,3 +27,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  fonts:
+    # Onest (SIL Open Font License, see assets/fonts/OFL.txt). Variable font;
+    # weights are applied through the wght axis in AppTheme.
+    - family: Onest
+      fonts:
+        - asset: assets/fonts/Onest-Variable.ttf

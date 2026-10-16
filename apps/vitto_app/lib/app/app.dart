@@ -16,7 +16,7 @@ class VittoApp extends ConsumerWidget {
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
+      themeMode: ThemeMode.light,
       locale: ref.watch(localeProvider),
       supportedLocales: supportedLocales,
       localizationsDelegates: const [

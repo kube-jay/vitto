@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "vitto-web",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5000", "--directory", "apps/vitto_app/build/web"],
+      "port": 5000
+    }
+  ]
+}

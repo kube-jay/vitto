@@ -222,4 +222,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get fixedPrice => 'Prix fixe';
+
+  @override
+  String get postListing => 'Déposer une annonce';
+
+  @override
+  String get searchEverything => 'Téléphones, meubles, vêtements…';
+
+  @override
+  String get latestListingsEmptyHint =>
+      'Soyez le premier à publier une annonce près de chez vous.';
 }

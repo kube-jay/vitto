@@ -29,7 +29,11 @@
   "noListingsYet": "No active Listings yet.",
   "comingSoon": "This screen is part of milestone {milestone}.",
   "@comingSoon": {
-    "placeholders": { "milestone": { "type": "String" } }
+    "placeholders": {
+      "milestone": {
+        "type": "String"
+      }
+    }
   },
   "demoModeBanner": "Demo mode: no backend configured.",
   "retry": "Retry",
@@ -73,5 +77,8 @@
   "conditionNew": "New",
   "conditionUsed": "Used",
   "negotiable": "Negotiable",
-  "fixedPrice": "Fixed price"
+  "fixedPrice": "Fixed price",
+  "postListing": "Post a Listing",
+  "searchEverything": "Search phones, furniture, clothes…",
+  "latestListingsEmptyHint": "Be the first to post a Listing in your area."
 }
