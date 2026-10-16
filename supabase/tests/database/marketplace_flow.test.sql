@@ -48,9 +48,11 @@ select throws_ok(
 reset role;
 set local role anon;
 set local request.jwt.claims = '{"role":"anon"}';
-select is((select count(*)::int from public.search_listings('samsung')), 1,
+select is((select count(*)::int from public.search_listings('samsung')
+           where id = (select v::uuid from t where k='L1')), 1,
   'anon finds the active listing by text search');
-select is((select count(*)::int from public.search_listings('tele')), 0,
+select is((select count(*)::int from public.search_listings('tele')
+           where id = (select v::uuid from t where k='L1')), 0,
   'search does not match unrelated words');
 
 -- AT-03: non-owner cannot edit

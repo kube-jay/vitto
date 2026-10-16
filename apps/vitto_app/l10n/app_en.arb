@@ -27,14 +27,6 @@
   "categories": "Categories",
   "latestListings": "Latest Listings",
   "noListingsYet": "No active Listings yet.",
-  "comingSoon": "This screen is part of milestone {milestone}.",
-  "@comingSoon": {
-    "placeholders": {
-      "milestone": {
-        "type": "String"
-      }
-    }
-  },
   "demoModeBanner": "Demo mode: no backend configured.",
   "retry": "Retry",
   "loading": "Loading…",
@@ -80,5 +72,397 @@
   "fixedPrice": "Fixed price",
   "postListing": "Post a Listing",
   "searchEverything": "Search phones, furniture, clothes…",
-  "latestListingsEmptyHint": "Be the first to post a Listing in your area."
+  "latestListingsEmptyHint": "Be the first to post a Listing in your area.",
+  "accept": "Accept",
+  "reject": "Decline",
+  "counter": "Counter",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "save": "Save",
+  "saved": "Saved",
+  "send": "Send",
+  "edit": "Edit",
+  "remove": "Remove",
+  "reset": "Reset",
+  "restore": "Restore",
+  "suspend": "Suspend",
+  "publish": "Publish",
+  "archive": "Archive",
+  "chat": "Chat",
+  "any": "Any",
+  "you": "You",
+  "theOtherParty": "Other party",
+  "loadMore": "Load more",
+  "seeAll": "See all",
+  "nothingHere": "Nothing here yet.",
+  "details": "Details",
+  "errNoBackend": "Vitto is not connected to its server (demo mode).",
+  "errUnauthenticated": "Please sign in to continue.",
+  "errForbidden": "You don't have access to this.",
+  "errValidation": "Some information is missing or invalid.",
+  "errConflict": "This was already done or conflicts with another action.",
+  "errListingNotAvailable": "This Listing is no longer available.",
+  "errInvalidState": "This action isn't possible at this stage.",
+  "errPaymentPending": "A payment is in progress. Check its status first.",
+  "errProviderUnavailable": "Online payment is not available right now.",
+  "errRateLimited": "Too many attempts. Please wait a moment.",
+  "errInvalidCredentials": "Wrong email or password.",
+  "errEmailNotConfirmed": "Please confirm your email first (check your inbox).",
+  "errUserExists": "An account with this email already exists.",
+  "errWeakPassword": "Please choose a stronger password.",
+  "errAuthFailed": "Sign-in failed. Please try again.",
+  "errUploadFailed": "Upload failed. Use a JPG, PNG or WebP under 5 MB.",
+  "errFixedPrice": "This Listing has a fixed price: offer exactly the listed price.",
+  "errOfferPending": "There is already an open offer in this conversation.",
+  "errAlreadyRated": "You have already rated this deal.",
+  "errOfferExpired": "This offer has expired.",
+  "validEmail": "Enter a valid email address.",
+  "validPassword": "At least 8 characters.",
+  "validRequired": "Required",
+  "validTitle": "At least 3 characters.",
+  "validPrice": "Enter a valid price.",
+  "validPhotos": "Add at least one photo to publish.",
+  "forgotPassword": "Forgot password?",
+  "noAccountYet": "New to Vitto?",
+  "haveAccount": "I already have an account",
+  "displayName": "Your name",
+  "oneAccountHint": "One account to buy and sell.",
+  "checkYourEmail": "Check your email",
+  "confirmEmailSent": "We sent a confirmation link to {email}. Open it, then sign in.",
+  "@confirmEmailSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "agreeToTerms": "By creating an account you accept the Terms of use.",
+  "sendResetLink": "Send reset link",
+  "resetEmailSent": "If an account exists for this email, a reset link is on its way.",
+  "newPassword": "Choose a new password",
+  "passwordUpdated": "Password updated.",
+  "allCountries": "All countries",
+  "allCategories": "All categories",
+  "filters": "Filters",
+  "sortNewest": "Newest",
+  "sortPriceAsc": "Price: low to high",
+  "sortPriceDesc": "Price: high to low",
+  "noResults": "No Listings found",
+  "noResultsHint": "Try other words or remove some filters.",
+  "region": "State / department",
+  "category": "Category",
+  "condition": "Condition",
+  "priceMin": "Min price",
+  "priceMax": "Max price",
+  "priceType": "Price type",
+  "pickCountryForPrice": "Choose a country to filter by price.",
+  "showResults": "Show results",
+  "postedOn": "Posted {date}",
+  "@postedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "messageSeller": "Message seller",
+  "makeOffer": "Make an offer",
+  "buyAtThisPrice": "Buy at this price",
+  "listingUnavailableNote": "This Listing is not available for new offers.",
+  "description": "Description",
+  "safetyTip": "Stay safe: keep the conversation in Vitto, check the item before giving your confirmation code, and meet in a public place.",
+  "reportListing": "Report this Listing",
+  "noRatingsYet": "No ratings yet",
+  "completedDealsCount": "{count, plural, =0{No completed deals} =1{1 completed deal} other{{count} completed deals}}",
+  "@completedDealsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "yourListing": "Your Listing",
+  "archiveConfirm": "Archive this Listing? It will no longer be visible.",
+  "listingSuspendedNote": "This Listing was suspended by Vitto. Contact support if you think this is a mistake.",
+  "listingImagesCount": "Photos ({count}/8)",
+  "@listingImagesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photosHint": "Add 1 to 8 photos. The first one is the cover.",
+  "addPhotos": "Add photos",
+  "cover": "Cover",
+  "makeCover": "Make cover",
+  "title": "Title",
+  "titleHint": "e.g. iPhone 12, 128 GB, blue",
+  "descriptionHint": "Condition, size, what's included, reason for selling…",
+  "price": "Price",
+  "negotiableHint": "Buyers can make offers and you can counter.",
+  "fixedPriceHint": "Buyers can only offer the listed price.",
+  "location": "Location",
+  "city": "City / area",
+  "saveDraft": "Save as draft",
+  "saveChanges": "Save changes",
+  "listingPublished": "Your Listing is live!",
+  "drafts": "Drafts",
+  "reservedAndSold": "Reserved & sold",
+  "inboxEmpty": "No conversations yet",
+  "inboxEmptyHint": "Message a seller from any Listing to start.",
+  "youAreBuying": "Buying",
+  "youAreSelling": "Selling",
+  "viewProfile": "View profile",
+  "reportUser": "Report user",
+  "dealCreatedBanner": "Offer accepted – a Deal was created.",
+  "openDeal": "Open Deal",
+  "startConversation": "Say hello!",
+  "chatSafetyHint": "Ask about the item and agree on a price with a structured offer.",
+  "writeMessage": "Write a message…",
+  "sysOfferAccepted": "{who, select, you{You accepted the offer} other{The offer was accepted}}",
+  "@sysOfferAccepted": {
+    "placeholders": {
+      "who": {
+        "type": "String"
+      }
+    }
+  },
+  "sysOfferRejected": "{who, select, you{You declined the offer} other{The offer was declined}}",
+  "@sysOfferRejected": {
+    "placeholders": {
+      "who": {
+        "type": "String"
+      }
+    }
+  },
+  "sysOfferCancelled": "{who, select, you{You withdrew your offer} other{The offer was withdrawn}}",
+  "@sysOfferCancelled": {
+    "placeholders": {
+      "who": {
+        "type": "String"
+      }
+    }
+  },
+  "sysDealUpdate": "Deal status: {status}",
+  "@sysDealUpdate": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "yourOffer": "Your offer",
+  "theirOffer": "Their offer",
+  "yourCounterOffer": "Your counter-offer",
+  "theirCounterOffer": "Their counter-offer",
+  "offerExpires": "Valid until {date}",
+  "@offerExpires": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "acceptOfferConfirm": "Accept this offer?",
+  "acceptOfferHint": "A Deal is created at this price and the Listing is reserved.",
+  "counterOffer": "Counter-offer",
+  "withdrawOffer": "Withdraw",
+  "listedPrice": "Listed at {price}",
+  "@listedPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "fixedPriceOfferNote": "Fixed price – you are offering the listed price.",
+  "sendOffer": "Send offer",
+  "inProgress": "In progress",
+  "allDeals": "All",
+  "noDeals": "No deals yet",
+  "noDealsHint": "A Deal starts when an offer is accepted.",
+  "modeOnline": "Pay online",
+  "modeOffline": "Meet in person",
+  "modeOnlineHint": "The buyer pays through Vitto. The seller is paid after the buyer confirms receipt with a 6-digit code.",
+  "modeOfflineHint": "Meet, check the item and pay each other directly. Vitto does not handle the money.",
+  "chooseModeTitle": "How do you want to complete this deal?",
+  "stepAgreed": "Price agreed",
+  "stepModeChosen": "Online or in person chosen",
+  "stepPaid": "Payment confirmed",
+  "stepHandoverCode": "Item handed over (code)",
+  "stepBothConfirm": "Both confirm the exchange",
+  "stepRate": "Rate each other",
+  "dealCancelledNote": "This Deal was cancelled.",
+  "waitingForPayment": "Waiting for the buyer to pay online.",
+  "paymentPendingNote": "Payment is being processed. This page updates automatically.",
+  "paymentFailedNote": "The last payment attempt failed. You can try again.",
+  "payOnlineHint": "Your money is confirmed by the payment provider. The seller is only paid after you confirm you received the item.",
+  "checkPaymentStatus": "Check payment status",
+  "payAmount": "Pay {amount}",
+  "@payAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "testPaymentTitle": "Test payment",
+  "testPaymentBody": "Test mode: no real money moves. Choose what the payment provider should report.",
+  "simulateSuccess": "Simulate success",
+  "simulateFailure": "Simulate failure",
+  "didYouReceive": "The seller says the item was handed over. Did you receive it?",
+  "confirmReceivedTitle": "Confirm you received the item?",
+  "confirmReceivedBody": "The Deal will be completed and the seller can be paid.",
+  "yesReceived": "Yes, I received it",
+  "noProblem": "No, there's a problem",
+  "describeProblem": "Describe the problem",
+  "codeBuyerHint": "When you have the item and have checked it, show your 6-digit code to the seller. Never share it before.",
+  "showMyCode": "Show my confirmation code",
+  "newCode": "Get a new code",
+  "showCodeConfirmTitle": "Have you received and checked the item?",
+  "showCodeConfirmBody": "Only give the code to the seller after checking the item. The code completes the Deal.",
+  "codeExpiresIn": "Expires in {time}",
+  "@codeExpiresIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "paidSellerHint": "Payment confirmed. Hand over the item and ask the buyer for their 6-digit code.",
+  "codeSellerHint": "Enter the buyer's 6-digit code to complete the Deal.",
+  "confirmHandover": "Confirm handover",
+  "codeSixDigits": "The code has 6 digits.",
+  "codeInvalid": "Wrong code. {count} attempts left.",
+  "@codeInvalid": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "codeExpired": "This code has expired. Ask the buyer for a new one.",
+  "codeLocked": "Too many wrong attempts. Ask the buyer for a new code.",
+  "codeNotGenerated": "The buyer has not generated a code yet.",
+  "dealCompletedSnack": "Deal completed!",
+  "waitingBuyerAnswer": "We asked the buyer to confirm. Waiting for their answer.",
+  "problemWithConfirmation": "Problem with confirmation",
+  "problemWithConfirmationHint": "e.g. I handed over the item but the buyer didn't give the code.",
+  "offlineHint": "Meet in a safe public place, check the item and pay directly. Then both of you confirm here.",
+  "confirmed": "confirmed",
+  "notYetConfirmed": "not yet",
+  "confirmExchange": "I confirm the exchange happened",
+  "confirmExchangeTitle": "Confirm the exchange?",
+  "confirmExchangeBody": "Only confirm after the item and payment were exchanged.",
+  "waitingOtherConfirm": "Waiting for the other party to confirm.",
+  "dealCompletedNote": "This Deal is completed. Thank you!",
+  "payout": "Seller payout",
+  "payoutNotEligible": "not eligible",
+  "payoutEligible": "ready – will be released by Vitto",
+  "payoutRequested": "being sent",
+  "payoutPaid": "paid",
+  "payoutFailed": "failed – Vitto will retry",
+  "payoutReversed": "reversed",
+  "yourRating": "Your rating",
+  "rateUser": "Rate {name}",
+  "@rateUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "ratingCommentHint": "Short comment (optional)",
+  "submitRating": "Submit rating",
+  "disputedNote": "Vitto is reviewing this Deal. The seller payout is on hold. Add photos or documents that help.",
+  "evidenceFiles": "{count, plural, =0{No files added} =1{1 file added} other{{count} files added}}",
+  "@evidenceFiles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addEvidence": "Add a photo",
+  "evidenceNote": "Short note (optional)",
+  "adminViewingDeal": "You are viewing this Deal as an admin.",
+  "sellerNote": "Seller note",
+  "switchToOffline": "Switch to meeting in person",
+  "switchToOnline": "Switch to online payment",
+  "cancelDeal": "Cancel deal",
+  "cancelDealTitle": "Cancel this deal?",
+  "cancelDealHint": "Reason (optional)",
+  "reportProblem": "Report a problem",
+  "reportProblemTitle": "Report a problem to Vitto",
+  "reportProblemHint": "What happened? An admin will review it.",
+  "reviewsCount": "{count, plural, =1{1 review} other{{count} reviews}}",
+  "@reviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "memberSince": "Member since {date}",
+  "@memberSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSuspendedNote": "Your account is suspended. You can browse but not post or trade.",
+  "viewPublicProfile": "View my public profile",
+  "profileUnavailable": "This profile is not available.",
+  "activeListings": "Active Listings",
+  "reviews": "Reviews",
+  "changePhoto": "Change photo",
+  "favoritesEmpty": "No favorites yet",
+  "favoritesEmptyHint": "Tap the heart on a Listing to save it here.",
+  "reportTitle": "Report",
+  "reportDetailsHint": "Add details (optional)",
+  "reportSent": "Thanks – our team will review it.",
+  "reasonProhibited": "Prohibited item",
+  "reasonScam": "Scam or fraud",
+  "reasonOffensive": "Offensive content",
+  "reasonWrongInfo": "Wrong information",
+  "reasonNoShow": "Didn't show up",
+  "reasonNotReceived": "Item not received",
+  "reasonOther": "Other",
+  "reportOpen": "Open",
+  "reportReviewing": "Reviewing",
+  "reportResolved": "Resolved",
+  "reportDismissed": "Dismissed",
+  "searchUsersHint": "Search by name or email",
+  "reasonForRecord": "Reason (kept in the audit log)",
+  "addCategory": "Add category",
+  "openTarget": "Open",
+  "resolveComplete": "Complete deal (pay seller)",
+  "resolveCancel": "Cancel deal (refund buyer)",
+  "resolveHint": "Decision and reason. Refunds are processed manually in the provider dashboard.",
+  "payoutGateNote": "Payouts are only possible for completed online Deals. Real payouts stay disabled until the provider and legal approvals (DEC-06) are in place.",
+  "payouts": "Payouts",
+  "payments": "Payments",
+  "releasePayout": "Release payout",
+  "helpTitle": "How Vitto works",
+  "helpStep1Title": "Find or post",
+  "helpStep1Body": "Search Listings in Nigeria and Benin, or post your own item in minutes.",
+  "helpStep2Title": "Chat and offer",
+  "helpStep2Body": "Message the seller inside Vitto and make a price offer. The seller can accept, decline or counter.",
+  "helpStep3Title": "Agree a Deal",
+  "helpStep3Body": "When an offer is accepted, choose to pay online through Vitto or meet in person.",
+  "helpStep4Title": "Confirm",
+  "helpStep4Body": "Online: the buyer gives a 6-digit code after checking the item. In person: both confirm in the app.",
+  "helpStep5Title": "Rate",
+  "helpStep5Body": "After a completed Deal, rate each other to build trust.",
+  "safetyTitle": "Stay safe",
+  "safetyBody": "Keep all conversations in Vitto. Never share your confirmation code before you have checked the item. Meet in busy public places. Never pay outside Vitto for an online Deal.",
+  "prohibitedTitle": "Prohibited items",
+  "prohibitedBody": "Weapons, drugs, stolen goods, counterfeit products, animals, and anything illegal in Nigeria or Benin are not allowed.",
+  "supportTitle": "Need help?",
+  "supportBody": "Use \"Report\" on a Listing, profile or Deal. Our team reviews reports and disputes, usually within 72 hours.",
+  "legalDraftNotice": "Draft – to be replaced after legal review for Nigeria and Benin before launch.",
+  "termsBody": "Vitto is a marketplace that connects buyers and sellers of physical products in Nigeria and Benin. Users are responsible for the accuracy of their Listings and for the items they sell. Online payments are processed by licensed payment providers; Vitto releases seller payouts only after the buyer confirms receipt or an admin decides a dispute. Offline exchanges happen directly between users and Vitto does not handle that money. Prohibited items are not allowed. Vitto may suspend Listings or accounts that break these rules.",
+  "privacyBody": "We collect only what is needed to run the marketplace: your account details, profile, Listings, messages, offers, deals and reports. Card details are never stored by Vitto; payments are handled by the payment provider. Messages are visible only to the two participants, and to admins when reviewing a report or dispute. You can ask us to delete your account; some records (deals, payments, disputes) are kept as required by law."
 }

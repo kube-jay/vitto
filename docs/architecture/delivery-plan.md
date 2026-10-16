@@ -12,22 +12,31 @@
 
 ## Milestones (acceptance-driven, not calendar-driven)
 
-| Gate | Scope | Done means | Status |
-|------|-------|-----------|--------|
-| M0 | Repo, docs, Flutter shell, Supabase skeleton, CI | Everyone can clone/build/test; rules and open decisions visible | **In progress** |
-| M1 | Auth, profile, country, locale | Register once, sign in, choose en/fr, create profile | Next |
-| M2 | Categories, Listings, images, discovery, favorites | One User lists; another discovers via filters | |
-| M3 | Conversations, realtime chat, Offers/counters | Two users exchange messages and structured Offers | Needs DEC-03, DEC-12 |
-| M4 | Atomic Offer acceptance → Deal, mode selection | One reserved Listing / Deal under race | Needs DEC-04, DEC-11 |
-| M5 | Offline confirmation, handover code, disputes, reports, ratings | Offline happy path + dispute fallback + ratings | Needs DEC-07, DEC-13 |
-| M6 | PaymentAdapter, Paystack sandbox, FedaPay feasibility, ledger, payout gate | Verified sandbox payment, no premature payout | Needs provider sandbox keys; live needs DEC-05/06/16 |
-| M7 | Admin ops, FR QA, security, hardening | All AT-01…AT-20 pass, gates signed | |
+| Gate | Scope | Status (2026-10-16) |
+|------|-------|---------------------|
+| M0 | Repo, docs, Flutter shell, Supabase, CI | Done |
+| M1 | Auth (email + password, confirmed email), profile, country, locale | Built |
+| M2 | Categories, Listings, 1–8 images, search/filters/sort, favorites | Built |
+| M3 | Conversations, realtime chat, Offers / counters / cancel | Built |
+| M4 | Atomic Offer acceptance → Deal, online/offline choice | Built; race tested (AT-06) |
+| M5 | Offline confirmations, handover code, confirmation problem, disputes, reports, ratings | Built |
+| M6 | PaymentAdapter, mock checkout, Paystack adapter, ledger, payout gate | Built in mock mode; Paystack needs sandbox keys; FedaPay is a stub (DEC-16) |
+| M7 | Admin console, FR, security tests | Admin built; launch hardening open (below) |
 
-First demonstrable slice: register → create Listing → find Listing → chat → offer → accept → Deal.
+## Verified
 
-## Repository status after this scaffold
+- 62 database tests (RLS + every state transition, AT-01..AT-17)
+- 7 payment-adapter tests (signatures, amount mapping)
+- `scripts/smoke_online_flow.py`: full online Deal over the real local API
+- 14 Flutter tests (EN/FR switch, phone width, auth guard, money, statuses)
+- Manual browser check: browse, search, Listing page, offer dialog, live offer card and chat
 
-- `apps/vitto_app` – Flutter Web shell with routes for every Part II §28.2 screen (placeholders), EN/FR l10n, country config, money formatting, canonical status enums.
-- `supabase/migrations` – 000001 extensions, 000002 profiles/categories/admin with RLS. Later migrations are written per milestone.
-- `supabase/functions/_shared` – error/response contract and `PaymentAdapter` interface + mock.
-- `.github` – CI (format, analyze, test, build web, migration lint), templates, CODEOWNERS placeholder.
+## Open before production launch
+
+- DEC-05 fees and DEC-06 custody/payout approval (live money stays off until then)
+- Paystack sandbox keys; FedaPay access (DEC-16)
+- Real Terms / Privacy text after legal review (placeholders in app)
+- DEC-01/02 optional verification badge and phone display (VT-032)
+- Hosted staging project, domain, monitoring/alerts, backups + restore drill (VT-035)
+- Browser E2E suite across devices (VT-036) and a full manual French QA pass (VT-033)
+- Admin MFA before live financial operations

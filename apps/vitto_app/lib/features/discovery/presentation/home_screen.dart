@@ -1,20 +1,174 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/localization/generated/app_localizations.dart';
 import '../../../app/routes.dart';
 import '../../../app/theme.dart';
+import '../../../core/config/env.dart';
+import '../../../core/widgets/common.dart';
+import '../../listings/data/listing_repository.dart';
+import '../../listings/domain/listing.dart';
+import '../../listings/presentation/widgets/listing_card.dart';
 import '../data/demo_categories.dart';
+import '../data/discovery_repository.dart';
+import '../data/market_controller.dart';
 
-/// Homepage: one search box, category tiles, latest active Listings
-/// (Part I В§7). Listing data arrives with VT-012; this renders the empty state.
-class HomeScreen extends StatelessWidget {
+/// Homepage: search box, country switch, category tiles and the newest
+/// active Listings (Part I §7).
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final country = ref.watch(browseCountryProvider);
+    final filters = SearchFilters(country: country);
+    final latest = Env.hasBackend
+        ? ref.watch(searchResultsProvider(filters))
+        : const AsyncData(<Listing>[]);
+
+    return RefreshIndicator(
+      onRefresh: () async => ref.invalidate(searchResultsProvider(filters)),
+      child: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l10n.tagline, style: theme.textTheme.headlineSmall),
+                  const SizedBox(height: 12),
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: l10n.searchEverything,
+                      prefixIcon: const Icon(Icons.search),
+                    ),
+                    textInputAction: TextInputAction.search,
+                    onSubmitted: (q) => context.push(
+                      Uri(
+                        path: Routes.search,
+                        queryParameters: filters.copyWith(query: q).toQuery(),
+                      ).toString(),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  _CountrySwitch(
+                    value: country,
+                    onChanged: ref.read(browseCountryProvider.notifier).select,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(l10n.categories, style: theme.textTheme.titleLarge),
+                ],
+              ),
+            ),
+          ),
+          const _CategoryGrid(),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(16, 28, 16, 12),
+            sliver: SliverToBoxAdapter(
+              child: Text(
+                l10n.latestListings,
+                style: theme.textTheme.titleLarge,
+              ),
+            ),
+          ),
+          ...latest.when(
+            data: (items) => items.isEmpty
+                ? [
+                    SliverToBoxAdapter(
+                      child: EmptyState(
+                        icon: Icons.storefront_outlined,
+                        title: l10n.noListingsYet,
+                        message: l10n.latestListingsEmptyHint,
+                        action: FilledButton(
+                          onPressed: () => context.go(Routes.sell),
+                          child: Text(l10n.postListing),
+                        ),
+                      ),
+                    ),
+                  ]
+                : [
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      sliver: ListingSliverGrid(listings: items),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Center(
+                          child: OutlinedButton(
+                            onPressed: () => context.push(
+                              Uri(
+                                path: Routes.search,
+                                queryParameters: filters.toQuery(),
+                              ).toString(),
+                            ),
+                            child: Text(l10n.seeAll),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+            loading: () => [
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.all(32),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+              ),
+            ],
+            error: (e, _) => [
+              SliverToBoxAdapter(
+                child: ErrorState(
+                  error: e,
+                  onRetry: () => ref.invalidate(searchResultsProvider(filters)),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CountrySwitch extends StatelessWidget {
+  const _CountrySwitch({required this.value, required this.onChanged});
+
+  final String? value;
+  final ValueChanged<String?> onChanged;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
+    Widget chip(String? code, String label) => Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: ChoiceChip(
+        label: Text(label),
+        selected: value == code,
+        onSelected: (_) => onChanged(code),
+        selectedColor: VittoColors.navySoft,
+        side: const BorderSide(color: VittoColors.line),
+      ),
+    );
+    return Wrap(
+      children: [
+        chip('NG', l10n.countryNigeria),
+        chip('BJ', l10n.countryBenin),
+        chip(null, l10n.allCountries),
+      ],
+    );
+  }
+}
+
+class _CategoryGrid extends ConsumerWidget {
+  const _CategoryGrid();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final locale = Localizations.localeOf(context);
     final width = MediaQuery.sizeOf(context).width;
     final columns = width >= 1100
@@ -23,73 +177,35 @@ class HomeScreen extends StatelessWidget {
         ? 4
         : 3;
 
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          sliver: SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(l10n.tagline, style: theme.textTheme.headlineSmall),
-                const SizedBox(height: 12),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: l10n.searchEverything,
-                    prefixIcon: const Icon(Icons.search),
-                  ),
-                  textInputAction: TextInputAction.search,
-                  onSubmitted: (q) => context.go(
-                    Uri(
-                      path: Routes.search,
-                      queryParameters: {'q': q},
-                    ).toString(),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Text(l10n.categories, style: theme.textTheme.titleLarge),
-              ],
-            ),
-          ),
+    final tiles = <({String slug, String name, IconData icon})>[];
+    if (Env.hasBackend) {
+      for (final c in ref.watch(categoriesProvider).value ?? const []) {
+        if (c.parentId == null) {
+          tiles.add((slug: c.slug, name: c.name(locale), icon: c.icon));
+        }
+      }
+    } else {
+      for (final c in demoCategories) {
+        tiles.add((slug: c.slug, name: c.name(locale), icon: c.icon));
+      }
+    }
+
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      sliver: SliverGrid.builder(
+        itemCount: tiles.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: columns,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          childAspectRatio: columns == 3 ? 0.9 : 1.6,
         ),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          sliver: SliverGrid.builder(
-            itemCount: demoCategories.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: columns,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childAspectRatio: columns == 3 ? 0.9 : 1.6,
-            ),
-            itemBuilder: (context, i) {
-              final c = demoCategories[i];
-              return _CategoryTile(
-                icon: c.icon,
-                label: c.name(locale),
-                onTap: () => context.go('/c/${c.slug}'),
-              );
-            },
-          ),
+        itemBuilder: (context, i) => _CategoryTile(
+          icon: tiles[i].icon,
+          label: tiles[i].name,
+          onTap: () => context.push('/c/${tiles[i].slug}'),
         ),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(16, 28, 16, 24),
-          sliver: SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(l10n.latestListings, style: theme.textTheme.titleLarge),
-                const SizedBox(height: 12),
-                _EmptyListings(
-                  title: l10n.noListingsYet,
-                  hint: l10n.latestListingsEmptyHint,
-                  action: l10n.postListing,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -132,52 +248,6 @@ class _CategoryTile extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _EmptyListings extends StatelessWidget {
-  const _EmptyListings({
-    required this.title,
-    required this.hint,
-    required this.action,
-  });
-
-  final String title;
-  final String hint;
-  final String action;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            const Icon(
-              Icons.storefront_outlined,
-              size: 40,
-              color: VittoColors.navy,
-            ),
-            const SizedBox(height: 12),
-            Text(title, style: theme.textTheme.titleMedium),
-            const SizedBox(height: 4),
-            Text(
-              hint,
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: VittoColors.muted,
-              ),
-            ),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () => context.go(Routes.sell),
-              child: Text(action),
-            ),
-          ],
         ),
       ),
     );

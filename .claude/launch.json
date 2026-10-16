@@ -4,7 +4,7 @@
     {
       "name": "vitto-web",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "5000", "--directory", "apps/vitto_app/build/web"],
+      "runtimeArgs": ["scripts/serve_web.py", "5000"],
       "port": 5000
     }
   ]

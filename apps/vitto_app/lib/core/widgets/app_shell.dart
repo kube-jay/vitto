@@ -7,6 +7,7 @@ import '../../app/localization/locale_controller.dart';
 import '../../app/routes.dart';
 import '../../app/theme.dart';
 import '../../features/auth/data/session_provider.dart';
+import '../../features/conversations/data/conversation_repository.dart';
 import '../config/env.dart';
 
 class _Destination {
@@ -68,6 +69,9 @@ class AppShell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final wide = MediaQuery.sizeOf(context).width >= Breakpoints.expanded;
+    final unread = ref.watch(isSignedInProvider)
+        ? ref.watch(unreadCountProvider)
+        : 0;
 
     final body = Column(
       children: [
@@ -103,7 +107,11 @@ class AppShell extends ConsumerWidget {
                 destinations: [
                   for (final d in _destinations)
                     NavigationDestination(
-                      icon: Icon(d.icon),
+                      icon: Badge(
+                        isLabelVisible: d.path == Routes.inbox && unread > 0,
+                        label: Text('$unread'),
+                        child: Icon(d.icon),
+                      ),
                       selectedIcon: Icon(d.selectedIcon),
                       label: d.label(l10n),
                     ),
@@ -144,7 +152,16 @@ class _NarrowHeader extends ConsumerWidget implements PreferredSizeWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final signedIn = ref.watch(isSignedInProvider);
+    final canPop = GoRouter.of(context).canPop();
     return AppBar(
+      automaticallyImplyLeading: false,
+      leading: canPop
+          ? IconButton(
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => context.pop(),
+            )
+          : null,
       title: const _Logo(),
       shape: const Border(bottom: BorderSide(color: VittoColors.line)),
       actions: [
@@ -211,6 +228,14 @@ class _WideHeader extends ConsumerWidget implements PreferredSizeWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
+                  if (GoRouter.of(context).canPop())
+                    IconButton(
+                      tooltip: MaterialLocalizations.of(
+                        context,
+                      ).backButtonTooltip,
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () => context.pop(),
+                    ),
                   const _Logo(),
                   const SizedBox(width: 16),
                   // Long French labels must never overflow the header.

@@ -14,6 +14,7 @@ abstract final class Routes {
   static const privacy = '/privacy';
 
   // Authenticated
+  static const newPassword = '/new-password';
   static const me = '/me';
   static const editProfile = '/me/edit';
   static const sell = '/sell';
@@ -26,14 +27,9 @@ abstract final class Routes {
   static const deal = '/deals/:id';
   static const reports = '/reports';
 
-  // Admin (server re-checks the admin role on every privileged call)
+  // Admin (the server re-checks the admin role on every privileged call)
   static const admin = '/admin';
-  static const adminUsers = '/admin/users';
-  static const adminListings = '/admin/listings';
-  static const adminCategories = '/admin/categories';
-  static const adminReports = '/admin/reports';
-  static const adminDisputes = '/admin/disputes';
-  static const adminPayments = '/admin/payments';
+  static const adminTab = '/admin/:tab';
 
   static const _publicPrefixes = [
     search,

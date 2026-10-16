@@ -1,32 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/widgets/app_shell.dart';
-import '../core/widgets/placeholder_screen.dart';
+import '../features/admin/presentation/admin_screen.dart';
 import '../features/auth/data/session_provider.dart';
+import '../features/auth/presentation/auth_screens.dart';
+import '../features/conversations/presentation/conversation_screen.dart';
+import '../features/conversations/presentation/inbox_screen.dart';
+import '../features/deals/presentation/deal_screen.dart';
+import '../features/deals/presentation/deals_screen.dart';
+import '../features/discovery/data/discovery_repository.dart';
 import '../features/discovery/presentation/home_screen.dart';
-import 'localization/generated/app_localizations.dart';
+import '../features/discovery/presentation/search_screen.dart';
+import '../features/favorites/presentation/favorites_screen.dart';
+import '../features/help/presentation/static_pages.dart';
+import '../features/listings/presentation/listing_details_screen.dart';
+import '../features/listings/presentation/listing_form_screen.dart';
+import '../features/listings/presentation/my_listings_screen.dart';
+import '../features/profile/presentation/profile_screens.dart';
+import '../features/reports/presentation/report_dialog.dart';
 import 'routes.dart';
 
-GoRoute _placeholder(
-  String path,
-  String milestone,
-  String Function(AppLocalizations) title,
-) => GoRoute(
-  path: path,
-  builder: (context, _) => PlaceholderScreen(
-    title: title(AppLocalizations.of(context)),
-    milestone: milestone,
-  ),
-);
+GoRoute _route(String path, Widget Function(GoRouterState s) build) =>
+    GoRoute(path: path, builder: (_, s) => build(s));
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier<int>(0);
   ref.listen(isSignedInProvider, (_, _) => refresh.value++);
   ref.onDispose(refresh.dispose);
 
-  return GoRouter(
+  final router = GoRouter(
     refreshListenable: refresh,
     redirect: (context, state) {
       final signedIn = ref.read(isSignedInProvider);
@@ -39,7 +44,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         ).toString();
       }
       if (signedIn && (location == Routes.login || location == Routes.signup)) {
-        return state.uri.queryParameters['from'] ?? Routes.home;
+        final from = state.uri.queryParameters['from'];
+        return from != null && from.startsWith('/') ? from : Routes.home;
       }
       return null;
     },
@@ -48,57 +54,73 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state, child) =>
             AppShell(location: state.matchedLocation, child: child),
         routes: [
-          GoRoute(path: Routes.home, builder: (_, _) => const HomeScreen()),
-          _placeholder(Routes.search, 'M2', (l) => l.navSearch),
-          _placeholder(Routes.category, 'M2', (l) => l.categories),
-          _placeholder(Routes.listing, 'M2', (l) => l.screenListingDetails),
-          _placeholder(Routes.editListing, 'M2', (l) => l.screenEditListing),
-          _placeholder(
+          _route(Routes.home, (_) => const HomeScreen()),
+          _route(
+            Routes.search,
+            (s) => SearchScreen(
+              filters: SearchFilters.fromQuery(s.uri.queryParameters),
+            ),
+          ),
+          _route(
+            Routes.category,
+            (s) => CategoryScreen(
+              slug: s.pathParameters['slug']!,
+              query: s.uri.queryParameters,
+            ),
+          ),
+          _route(
+            Routes.editListing,
+            (s) => ListingFormScreen(listingId: s.pathParameters['id']),
+          ),
+          _route(
+            Routes.listing,
+            (s) => ListingDetailsScreen(id: s.pathParameters['id']!),
+          ),
+          _route(
             Routes.publicProfile,
-            'M1',
-            (l) => l.screenPublicProfile,
+            (s) => PublicProfileScreen(id: s.pathParameters['id']!),
           ),
-          _placeholder(Routes.login, 'M1', (l) => l.signIn),
-          _placeholder(Routes.signup, 'M1', (l) => l.signUp),
-          _placeholder(Routes.resetPassword, 'M1', (l) => l.resetPassword),
-          _placeholder(Routes.help, 'M7', (l) => l.navHelp),
-          _placeholder(Routes.terms, 'M7', (l) => l.screenTerms),
-          _placeholder(Routes.privacy, 'M7', (l) => l.screenPrivacy),
-          _placeholder(Routes.me, 'M1', (l) => l.navProfile),
-          _placeholder(Routes.editProfile, 'M1', (l) => l.screenEditProfile),
-          _placeholder(Routes.sell, 'M2', (l) => l.screenCreateListing),
-          _placeholder(Routes.myListings, 'M2', (l) => l.screenMyListings),
-          _placeholder(Routes.favorites, 'M2', (l) => l.navFavorites),
-          _placeholder(Routes.inbox, 'M3', (l) => l.navInbox),
-          _placeholder(Routes.conversation, 'M3', (l) => l.screenConversation),
-          _placeholder(Routes.deals, 'M4', (l) => l.navDeals),
-          _placeholder(Routes.deal, 'M4', (l) => l.screenDealDetails),
-          _placeholder(Routes.reports, 'M5', (l) => l.screenReports),
-          _placeholder(Routes.admin, 'M7', (l) => l.navAdmin),
-          _placeholder(Routes.adminUsers, 'M7', (l) => l.screenAdminUsers),
-          _placeholder(
-            Routes.adminListings,
-            'M7',
-            (l) => l.screenAdminListings,
+          _route(
+            Routes.login,
+            (s) => LoginScreen(from: s.uri.queryParameters['from']),
           ),
-          _placeholder(
-            Routes.adminCategories,
-            'M7',
-            (l) => l.screenAdminCategories,
+          _route(Routes.signup, (_) => const SignupScreen()),
+          _route(Routes.resetPassword, (_) => const ResetPasswordScreen()),
+          _route(Routes.newPassword, (_) => const NewPasswordScreen()),
+          _route(Routes.help, (_) => const HelpScreen()),
+          _route(Routes.terms, (_) => const LegalScreen(terms: true)),
+          _route(Routes.privacy, (_) => const LegalScreen(terms: false)),
+          _route(Routes.me, (_) => const MyProfileScreen()),
+          _route(Routes.editProfile, (_) => const EditProfileScreen()),
+          _route(Routes.sell, (_) => const ListingFormScreen()),
+          _route(Routes.myListings, (_) => const MyListingsScreen()),
+          _route(Routes.favorites, (_) => const FavoritesScreen()),
+          _route(Routes.inbox, (_) => const InboxScreen()),
+          _route(
+            Routes.conversation,
+            (s) => ConversationScreen(
+              id: s.pathParameters['id']!,
+              openOffer: s.uri.queryParameters['offer'] == '1',
+            ),
           ),
-          _placeholder(Routes.adminReports, 'M7', (l) => l.screenAdminReports),
-          _placeholder(
-            Routes.adminDisputes,
-            'M7',
-            (l) => l.screenAdminDisputes,
-          ),
-          _placeholder(
-            Routes.adminPayments,
-            'M7',
-            (l) => l.screenAdminPayments,
+          _route(Routes.deals, (_) => const DealsScreen()),
+          _route(Routes.deal, (s) => DealScreen(id: s.pathParameters['id']!)),
+          _route(Routes.reports, (_) => const MyReportsScreen()),
+          _route(Routes.admin, (_) => const AdminScreen()),
+          _route(
+            Routes.adminTab,
+            (s) => AdminScreen(tab: s.pathParameters['tab']!),
           ),
         ],
       ),
     ],
   );
+
+  // Password-recovery links sign the user in; send them to set a password.
+  ref.listen(authEventProvider, (_, next) {
+    if (next.value?.event == AuthChangeEvent.passwordRecovery) {
+      router.go(Routes.newPassword);
+    }
+  });
+  return router;
 });

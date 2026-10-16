@@ -20,9 +20,9 @@ docs/             product, architecture, contracts, decisions, runbooks, qa
 scripts/          reproducible local tasks
 ```
 
-## Local setup
+## Run it locally
 
-See [docs/runbooks/toolchain.md](docs/runbooks/toolchain.md).
+Full guide with test accounts: [docs/runbooks/local-dev.md](docs/runbooks/local-dev.md). Toolchain versions: [docs/runbooks/toolchain.md](docs/runbooks/toolchain.md).
 
 ```bash
 cd apps/vitto_app
@@ -32,11 +32,12 @@ flutter test
 flutter run -d chrome
 ```
 
-Backend (requires Docker Desktop running and the Supabase CLI):
+Backend (requires Docker Desktop running):
 
 ```bash
-npx supabase start
-npx supabase db reset
+npx supabase@2.121.0 start
+npx supabase@2.121.0 db reset
+python scripts/seed_demo_listings.py
 ```
 
 Copy `.env.example` to `.env` (ignored) and fill dev values. Never commit secrets.

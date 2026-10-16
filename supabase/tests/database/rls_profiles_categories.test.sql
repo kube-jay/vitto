@@ -16,7 +16,9 @@ select is(
 
 -- Anonymous visitor
 set local role anon;
-select is((select count(*)::int from public.profiles), 3, 'anon reads public profiles');
+select is((select count(*)::int from public.profiles where id in (
+  '11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222222',
+  '33333333-3333-3333-3333-333333333333')), 3, 'anon reads public profiles');
 select ok((select count(*) from public.categories) > 0, 'anon reads active categories');
 select throws_ok(
   $$insert into public.categories (slug, name_en, name_fr) values ('x','X','X')$$,
