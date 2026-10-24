@@ -431,3 +431,22 @@ verify_jwt = false
 
 [functions.payment-webhook-paystack]
 verify_jwt = false
+
+# Hosted team test site (Supabase Cloud project "vitto-staging" + Netlify).
+# Applied with `supabase config push`. Email confirmation stays ON (DEC-09).
+[remotes.staging]
+project_id = "dtkuddnceyzkpptuglml"
+
+[remotes.staging.auth]
+site_url = "https://meek-mermaid-09a8b3.netlify.app"
+additional_redirect_urls = ["https://meek-mermaid-09a8b3.netlify.app/**"]
+
+[remotes.staging.auth.email]
+enable_confirmations = true
+max_frequency = "1m0s"
+otp_length = 8
+
+# Keep two-factor (TOTP) available in the cloud for admins (Part II §33.1).
+[remotes.staging.auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
