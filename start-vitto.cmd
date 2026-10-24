@@ -55,7 +55,8 @@ if errorlevel 1 (
 )
 
 set "NEED_BUILD="
-if not exist "apps\vitto_app\build\web\index.html" set "NEED_BUILD=1"
+rem The marker tells a local build apart from a build-for-netlify.cmd build.
+if not exist "apps\vitto_app\build\web\.local-build" set "NEED_BUILD=1"
 if /i "%~1"=="rebuild" set "NEED_BUILD=1"
 if defined NEED_BUILD (
   echo  [3/4] Building the app (about 1 minute^)...
@@ -68,6 +69,7 @@ if defined NEED_BUILD (
     exit /b 1
   )
   popd
+  type nul > "apps\vitto_app\build\web\.local-build"
 ) else (
   echo  [3/4] App already built.
 )

@@ -78,6 +78,8 @@ Every test account uses the password **`VittoTest123!`**:
 
 More detail: [docs/runbooks/local-dev.md](docs/runbooks/local-dev.md).
 
+**Putting it online** (Supabase Cloud + Netlify): [docs/runbooks/hosting.md](docs/runbooks/hosting.md).
+
 ## What's left for a complete MVP
 
 | # | Item | Who / what it needs | Rough size |

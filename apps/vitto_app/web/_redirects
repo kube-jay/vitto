@@ -1,0 +1,2 @@
+# Netlify: send every path (/l/<id>, /deals/<id>, ...) to the Flutter app.
+/*    /index.html   200
