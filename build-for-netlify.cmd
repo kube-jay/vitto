@@ -29,7 +29,7 @@ echo %SB_KEY% | findstr /i "secret service_role" >nul && (
 echo.
 echo  Building (about 1 minute)...
 pushd apps\vitto_app
-call flutter build web --release --pwa-strategy=none --no-wasm-dry-run --dart-define=SUPABASE_URL=%SB_URL% --dart-define=SUPABASE_PUBLISHABLE_KEY=%SB_KEY% >nul
+call flutter build web --release --pwa-strategy=none --no-wasm-dry-run --output build\netlify --dart-define=SUPABASE_URL=%SB_URL% --dart-define=SUPABASE_PUBLISHABLE_KEY=%SB_KEY% >nul
 if errorlevel 1 (
   popd
   echo  The build failed. Run "flutter doctor" to check your Flutter setup.
@@ -40,12 +40,11 @@ popd
 
 echo.
 echo  Done. The website is in:
-echo    %CD%\apps\vitto_app\build\web
+echo    %CD%\apps\vitto_app\build\netlify
 echo.
-echo  Netlify: open your site ^> Deploys ^> drag this "web" folder onto the page.
+echo  Netlify: open your site ^> Deploys ^> drag this "netlify" folder onto the page.
 echo  (New site: https://app.netlify.com/drop and drop the folder there.)
 echo.
-echo  NOTE: start-vitto.cmd will now rebuild for local use on its next run.
 del /q "apps\vitto_app\build\web\.local-build" 2>nul
 explorer "apps\vitto_app\build"
 pause

@@ -28,10 +28,10 @@ npx supabase@2.121.0 functions deploy
 
 1. Double-click **`build-for-netlify.cmd`**.
 2. Paste the **Project URL** and **Publishable key** when asked. Find them in *Project Settings → API Keys*. Never paste the secret / service_role key.
-3. In Netlify: your site → **Deploys** → drag the opened `web` folder onto the page. (New site: https://app.netlify.com/drop.)
+3. In Netlify: your site → **Deploys** → drag the opened `netlify` folder (`apps/vitto_app/build/netlify`) onto the page. (New site: https://app.netlify.com/drop.)
 4. Note the site address, e.g. `https://vitto-xyz.netlify.app`.
 
-Run `start-vitto.cmd` afterwards as usual; it rebuilds the local version automatically.
+The local version (`start-vitto.cmd`) is built into a different folder and is not affected.
 
 ## 4. Connect the two (Supabase dashboard)
 
@@ -60,4 +60,4 @@ select id from auth.users where email = 'you@example.com';
 
 - Database changes: `npx supabase@2.121.0 db push`
 - Payment function changes: `npx supabase@2.121.0 functions deploy`
-- App changes: `build-for-netlify.cmd`, then drag the `web` folder into Netlify again
+- App changes: `build-for-netlify.cmd`, then drag the `netlify` folder into Netlify again
