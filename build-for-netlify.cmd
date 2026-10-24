@@ -45,6 +45,5 @@ echo.
 echo  Netlify: open your site ^> Deploys ^> drag this "netlify" folder onto the page.
 echo  (New site: https://app.netlify.com/drop and drop the folder there.)
 echo.
-del /q "apps\vitto_app\build\web\.local-build" 2>nul
 explorer "apps\vitto_app\build"
 pause
