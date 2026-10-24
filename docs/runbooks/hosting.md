@@ -56,7 +56,36 @@ insert into private.admin_users (user_id)
 select id from auth.users where email = 'you@example.com';
 ```
 
-## Updating the site later
+## Automatic deploys (recommended)
+
+Once this is set up, **every change merged into `main` updates the test site by itself**: database, payment functions and website. Nobody needs Supabase or Netlify access just to ship a change. The workflow is [.github/workflows/deploy-staging.yml](../../.github/workflows/deploy-staging.yml). It only runs after the normal checks (CI) pass.
+
+It needs **two keys**, added once by the account owner.
+
+### 1. Create the two keys
+
+| Key name | Where to create it |
+|----------|--------------------|
+| `SUPABASE_ACCESS_TOKEN` | https://supabase.com/dashboard/account/tokens → **Generate new token** → name it `github-deploy` → copy it (it is shown only once) |
+| `NETLIFY_AUTH_TOKEN` | https://app.netlify.com/user/applications#personal-access-tokens → **New access token** → name it `github-deploy`, choose an expiry → copy it |
+
+These are real passwords for your accounts. Paste them only into GitHub (step 2), never into chat, email or code.
+
+### 2. Store them in GitHub
+
+1. Open https://github.com/kube-jay/vitto/settings/environments → **New environment** → name it exactly `staging` → **Configure environment**.
+2. Under **Environment secrets** click **Add environment secret** twice:
+   - Name `SUPABASE_ACCESS_TOKEN`, value = the Supabase token.
+   - Name `NETLIFY_AUTH_TOKEN`, value = the Netlify token.
+3. Optional but recommended: under **Deployment branches and tags** choose *Selected branches* and add `main`, so only official code can use these keys.
+
+### 3. Try it
+
+Open https://github.com/kube-jay/vitto/actions → **Deploy staging** → **Run workflow** → **Run workflow**. After ~5 minutes all steps should be green and the site is updated. From then on it runs by itself after every merge.
+
+If the keys are missing, the workflow does not fail; it just skips and shows *"Staging deploy skipped: Missing secret(s)"*.
+
+## Updating the site by hand (if automatic deploys are not set up)
 
 - Database changes: `npx supabase@2.121.0 db push`
 - Payment function changes: `npx supabase@2.121.0 functions deploy`

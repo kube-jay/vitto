@@ -1,0 +1,134 @@
+# Updates the team test site after every successful CI run on main:
+#   1. database migrations  -> Supabase Cloud "vitto-staging"
+#   2. payment Edge Functions -> Supabase Cloud "vitto-staging"
+#   3. Flutter website       -> Netlify (meek-mermaid-09a8b3.netlify.app)
+#
+# Needs two secrets in GitHub -> Settings -> Environments -> "staging":
+#   SUPABASE_ACCESS_TOKEN, NETLIFY_AUTH_TOKEN
+# (see docs/runbooks/hosting.md). Without them the workflow skips with a note.
+# Local test accounts (supabase/seed.sql) are never sent to the cloud.
+
+name: Deploy staging
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+env:
+  SUPABASE_PROJECT_REF: dtkuddnceyzkpptuglml
+  SUPABASE_URL: https://dtkuddnceyzkpptuglml.supabase.co
+  # Publishable key: public by design (it ships inside every web page).
+  SUPABASE_PUBLISHABLE_KEY: sb_publishable_jT6NZMcdhFQjwAENvGfEvA_6x2pqIu6
+  NETLIFY_SITE: meek-mermaid-09a8b3
+  SUPABASE_CLI_VERSION: 2.121.0
+  NETLIFY_CLI_VERSION: 27.12.0
+  FLUTTER_VERSION: 3.35.6
+
+jobs:
+  deploy:
+    name: deploy_staging
+    # Only deploy code that passed CI (or when started by hand).
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://meek-mermaid-09a8b3.netlify.app
+    steps:
+      - name: Check secrets
+        id: secrets
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          missing=""
+          [ -n "$SUPABASE_ACCESS_TOKEN" ] || missing="$missing SUPABASE_ACCESS_TOKEN"
+          [ -n "$NETLIFY_AUTH_TOKEN" ] || missing="$missing NETLIFY_AUTH_TOKEN"
+          if [ -n "$missing" ]; then
+            echo "::notice title=Staging deploy skipped::Missing secret(s):$missing. Add them under Settings > Environments > staging (see docs/runbooks/hosting.md)."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout the commit that passed CI
+        if: steps.secrets.outputs.ready == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      # 1 + 2: backend -----------------------------------------------------
+      - name: Set up Supabase CLI
+        if: steps.secrets.outputs.ready == 'true'
+        uses: supabase/setup-cli@v1
+        with:
+          version: ${{ env.SUPABASE_CLI_VERSION }}
+
+      - name: Link vitto-staging
+        if: steps.secrets.outputs.ready == 'true'
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: supabase link --project-ref "$SUPABASE_PROJECT_REF" < /dev/null
+
+      - name: Apply database migrations
+        if: steps.secrets.outputs.ready == 'true'
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        # No --include-seed: seed.sql holds local test accounts only.
+        run: supabase db push --yes
+
+      - name: Deploy payment Edge Functions
+        if: steps.secrets.outputs.ready == 'true'
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: supabase functions deploy --use-api --project-ref "$SUPABASE_PROJECT_REF" --yes
+
+      # 3: website -----------------------------------------------------------
+      - name: Set up Flutter
+        if: steps.secrets.outputs.ready == 'true'
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Build website
+        if: steps.secrets.outputs.ready == 'true'
+        working-directory: apps/vitto_app
+        run: |
+          flutter pub get
+          flutter build web --release --pwa-strategy=none --no-wasm-dry-run \
+            --output build/netlify \
+            --dart-define=SUPABASE_URL="$SUPABASE_URL" \
+            --dart-define=SUPABASE_PUBLISHABLE_KEY="$SUPABASE_PUBLISHABLE_KEY"
+          test -f build/netlify/_redirects
+
+      - name: Set up Node
+        if: steps.secrets.outputs.ready == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Publish to Netlify
+        if: steps.secrets.outputs.ready == 'true'
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          COMMIT_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          npx --yes "netlify-cli@$NETLIFY_CLI_VERSION" deploy \
+            --dir apps/vitto_app/build/netlify \
+            --site "$NETLIFY_SITE" \
+            --prod --no-build \
+            --message "main @ ${COMMIT_SHA:0:7}"
