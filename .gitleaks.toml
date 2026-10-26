@@ -1,0 +1,12 @@
+# Secret-scanning rules for gitleaks (CI security_check).
+# Start from the default rules, then allow ONLY Supabase *publishable* keys:
+# they are public by design and ship inside every web page. Secret keys
+# (sb_secret_..., service_role JWTs, access tokens) are still reported.
+title = "Vitto gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Supabase publishable keys are public by design"
+regexes = ['''^sb_publishable_[A-Za-z0-9_-]{20,}$''']

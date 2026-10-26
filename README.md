@@ -95,6 +95,10 @@ More detail: [docs/runbooks/local-dev.md](docs/runbooks/local-dev.md).
 
 Taken together, the features are built, but the product isn't ready to launch. Taking real money depends on items 3–6.
 
+## Making changes
+
+Read **[CONTRIBUTING.md](CONTRIBUTING.md)**: the simple step-by-step guide for proposing, reviewing and shipping a change.
+
 ## For developers
 
 ```
